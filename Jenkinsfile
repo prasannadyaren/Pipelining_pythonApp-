@@ -9,13 +9,13 @@ pipeline {
     stages {
         stage('Clone GitHub Repo') {
             steps {
-                git branch: 'main', credentialsId: 'github-https', url: 'https://github.com/your-username/Pipelining_pythonApp.git'
+                git branch: 'main', credentialsId: 'github-https', url: 'https://github.com/prasannadyaren/Pipelining_pythonApp.git'
             }
         }
 
         stage('Set Up Python Virtual Environment') {
             steps {
-                bat '"C:\\Users\\your-username\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" -m venv venv'
+                bat ' "C:\\Users\\Lakshmi prasanna\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe" -m venv venv'
                 bat '.\\venv\\Scripts\\python.exe -m pip install --upgrade pip'
                 bat '.\\venv\\Scripts\\pip install flask pandas numpy tensorflow' 
             }
