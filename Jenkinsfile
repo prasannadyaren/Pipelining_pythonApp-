@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         VENV = "venv"
-        // Quoted path because of the space in your username
-        PYTHON = "\"C:\\Users\\Lakshmi prasanna\\AppData\\Local\\Programs\\Python\\Python313\\python.exe\""
+        // Use Python 3.10 path (quoted because of space in username)
+        PYTHON = "\"C:\\Users\\Lakshmi prasanna\\AppData\\Local\\Programs\\Python\\Python310\\python.exe\""
     }
 
     stages {
@@ -19,7 +19,7 @@ pipeline {
         stage('Set Up Python Virtual Environment') {
             steps {
                 bat "${PYTHON} -m venv %VENV%"
-                bat ".\\%VENV%\\Scripts\\python.exe -m pip install --upgrade pip"
+                bat ".\\%VENV%\\Scripts\\python.exe -m pip install --upgrade pip setuptools wheel build"
                 bat ".\\%VENV%\\Scripts\\pip install -r requirements.txt"
             }
         }
