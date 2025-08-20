@@ -1,30 +1,45 @@
-
 pipeline {
     agent any
 
     environment {
         VENV = "venv"
+        // Quoted path because of the space in your username
+        PYTHON = "\"C:\\Users\\Lakshmi prasanna\\AppData\\Local\\Programs\\Python\\Python313\\python.exe\""
     }
 
     stages {
         stage('Clone GitHub Repo') {
             steps {
-                git branch: 'main', credentialsId: 'github-https', url: 'https://github.com/prasannadyaren/Pipelining_pythonApp-.git'
+                git branch: 'main', 
+                    credentialsId: 'github-https', 
+                    url: 'https://github.com/prasannadyaren/Pipelining_pythonApp-.git'
             }
         }
 
         stage('Set Up Python Virtual Environment') {
             steps {
-                bat ' "C:\\Users\\Lakshmi prasanna\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m venv venv'
-                bat '.\\venv\\Scripts\\python.exe -m pip install --upgrade pip'
-                bat '.\\venv\\Scripts\\pip install flask pandas numpy tensorflow' 
+                bat "${PYTHON} -m venv %VENV%"
+                bat ".\\%VENV%\\Scripts\\python.exe -m pip install --upgrade pip"
+                bat ".\\%VENV%\\Scripts\\pip install -r requirements.txt"
             }
         }
 
-        stage('Run Flask App') {
+        stage('Run Flask App in Background') {
             steps {
-                bat '.\\venv\\Scripts\\python app.py'
+                bat '''
+                start /B .\\venv\\Scripts\\python.exe app.py
+                '''
+                echo "🚀 Flask app started in background"
             }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Pipeline finished successfully!"
+        }
+        failure {
+            echo "❌ Pipeline failed! Please check logs."
         }
     }
 }
